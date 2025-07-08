@@ -1,0 +1,1632 @@
+[
+  {
+    "column": "nu_inscricao",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_ano",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_faixa_etaria",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_sexo",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "co_municipio_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "no_municipio_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "co_uf_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "sg_uf_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_presenca",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "co_prova",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp1",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp2",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp3",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp4",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp5",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_objetiva",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tx_respostas_objetiva",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tx_gabarito_objetiva",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_status_redacao",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp1",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp2",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp3",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp4",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp5",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_redacao",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "in_qse",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q1",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q2",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q3",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q4",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q5",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q6",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q7",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q8",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q9",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q10",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q11",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q12",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q13",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q14",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q15",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q16",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q17",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q18",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q19",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q20",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q21",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q22",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q23",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q24",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q25",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q26",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q27",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q28",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q29",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q30",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q31",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q32",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q33",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q34",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q35",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q36",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q37",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q38",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q39",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q40",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q41",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q42",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q43",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q44",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q45",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q46",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q47",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q48",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q49",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q50",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q51",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q52",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q53",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q54",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q55",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q56",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q57",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q58",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q59",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q60",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q61",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q62",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q63",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q64",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q65",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q66",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q67",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q68",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q69",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q70",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q71",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q72",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q73",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q74",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q75",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q76",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q77",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q78",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q79",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q80",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q81",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q82",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q83",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q84",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q85",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q86",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q87",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q88",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q89",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q90",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q91",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q92",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q93",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q94",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q95",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q96",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q97",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q98",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q99",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q100",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q101",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q102",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q103",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q104",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q105",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q106",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q107",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q108",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q109",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q110",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q111",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q112",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q113",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q114",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q115",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q116",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q117",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q118",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q119",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q120",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q121",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q122",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q123",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q124",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q125",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q126",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q127",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q128",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q129",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q130",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q131",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q132",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q133",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q134",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q135",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q136",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q137",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_inscricao",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_ano",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_faixa_etaria",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_sexo",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "co_municipio_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "no_municipio_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "co_uf_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "sg_uf_residencia",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_presenca",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "co_prova",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp1",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp2",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp3",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp4",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "vl_perc_comp5",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_objetiva",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tx_respostas_objetiva",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tx_gabarito_objetiva",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "tp_status_redacao",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp1",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp2",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp3",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp4",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_comp5",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "nu_nota_redacao",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "in_qse",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q1",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q2",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q3",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q4",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q5",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q6",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q7",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q8",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q9",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q10",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q11",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q12",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q13",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q14",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q15",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q16",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q17",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q18",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q19",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q20",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q21",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q22",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q23",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q24",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q25",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q26",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q27",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q28",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q29",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q30",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q31",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q32",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q33",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q34",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q35",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q36",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q37",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q38",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q39",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q40",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q41",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q42",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q43",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q44",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q45",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q46",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q47",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q48",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q49",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q50",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q51",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q52",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q53",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q54",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q55",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q56",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q57",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q58",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q59",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q60",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q61",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q62",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q63",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q64",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q65",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q66",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q67",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q68",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q69",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q70",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q71",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q72",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q73",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q74",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q75",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q76",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q77",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q78",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q79",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q80",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q81",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q82",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q83",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q84",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q85",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q86",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q87",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q88",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q89",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q90",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q91",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q92",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q93",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q94",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q95",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q96",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q97",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q98",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q99",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q100",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q101",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q102",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q103",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q104",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q105",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q106",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q107",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q108",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q109",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q110",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q111",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q112",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q113",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q114",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q115",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q116",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q117",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q118",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q119",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q120",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q121",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q122",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q123",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q124",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q125",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q126",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q127",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q128",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q129",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q130",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q131",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q132",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q133",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q134",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q135",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q136",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  },
+  {
+    "column": "q137",
+    "year": "1998",
+    "table": "enem_microdado_1998"
+  }
+]

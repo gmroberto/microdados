@@ -1,0 +1,27 @@
+# Testing dependencies for ENEM Microdata Pipeline
+# Install with: pip install -r requirements-test.txt
+
+# Core testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+pytest-asyncio>=0.21.0
+
+# Performance monitoring
+psutil>=5.9.0
+
+# Data validation and testing
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Configuration and environment
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# Logging and reporting
+colorlog>=6.7.0
+
+# Optional: For advanced testing features
+# pytest-benchmark>=4.0.0  # Performance benchmarking
+# pytest-xdist>=3.0.0      # Parallel test execution
+# pytest-html>=3.1.0       # HTML test reports 

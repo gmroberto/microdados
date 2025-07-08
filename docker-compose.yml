@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Airflow
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: enem_user
+      POSTGRES_PASSWORD: enem_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U enem_user -d airflow"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database for ETL Data
+  postgres-etl:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: enem_data
+      POSTGRES_USER: enem_etl_user
+      POSTGRES_PASSWORD: enem_etl_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_etl_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U enem_etl_user -d enem_data"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database for Metabase
+  postgres-metabase:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: metabase
+      POSTGRES_USER: metabase_user
+      POSTGRES_PASSWORD: metabase_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_metabase_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metabase_user -d metabase"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Metabase Application
+  metabase:
+    image: metabase/metabase:latest
+    depends_on:
+      postgres-metabase:
+        condition: service_healthy
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase_user
+      MB_DB_PASS: metabase_password
+      MB_DB_HOST: postgres-metabase
+      MB_ENCRYPTION_SECRET_KEY: your-metabase-secret-key-here
+    ports:
+      - "3000:3000"
+    volumes:
+      - metabase_data:/metabase-data
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+
+
+  # Airflow Webserver
+  airflow-webserver:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://enem_user:enem_password@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__SECRET_KEY: your-secret-key-here
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./config:/opt/airflow/config
+      - ./data:/opt/airflow/data
+      - ./downloads:/opt/airflow/downloads
+      - ./src:/opt/airflow/src
+    command: webserver
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Airflow Scheduler
+  airflow-scheduler:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-webserver:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://enem_user:enem_password@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./config:/opt/airflow/config
+      - ./data:/opt/airflow/data
+      - ./downloads:/opt/airflow/downloads
+      - ./src:/opt/airflow/src
+    command: scheduler
+
+volumes:
+  postgres_data:
+  postgres_etl_data:
+  postgres_metabase_data:
+  metabase_data: 

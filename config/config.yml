@@ -1,0 +1,140 @@
+# ENEM Microdata ETL Pipeline - Unified Configuration
+# Single source of truth for all configuration settings
+
+# =============================================================================
+# ENVIRONMENT SETTINGS
+# =============================================================================
+environment: development
+
+# =============================================================================
+# APPLICATION SETTINGS
+# =============================================================================
+application:
+  # Data processing settings
+  chunk_size: 10000
+  united_table_name: enem_microdado_2011_2023
+  log_level: INFO
+  
+  # Download settings
+  skip_download: false
+  enem_base_url: https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/enem
+  
+  # Processing settings
+  max_workers: 4
+  timeout_seconds: 300
+  retry_attempts: 3
+
+# =============================================================================
+# AIRFLOW CONFIGURATION
+# =============================================================================
+airflow:
+  # Years to download (can be overridden via Airflow variables)
+  enem_years: [1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+            2021, 2022, 2023]
+  
+  # Web server settings
+  webserver_secret_key: ${AIRFLOW__WEBSERVER__SECRET_KEY}
+  load_examples: false
+  
+  # Task settings
+  task_timeout: 300
+  executor: LocalExecutor
+
+# =============================================================================
+# METABASE CONFIGURATION
+# =============================================================================
+metabase:
+  # Application settings
+  port: 3000
+  host: 0.0.0.0
+  
+  # Database settings
+  db_type: postgres
+  db_host: ${METABASE_DB_HOST:-localhost}
+  db_port: ${METABASE_DB_PORT:-5434}
+  db_name: ${METABASE_DB_NAME:-metabase}
+  db_user: ${METABASE_DB_USER:-metabase_user}
+  db_password: ${METABASE_DB_PASSWORD}
+  
+  # Security settings
+  encryption_secret_key: ${METABASE_ENCRYPTION_SECRET_KEY}
+  
+  # Performance settings
+  java_timezone: UTC
+  java_memory: 2g
+  
+  # Feature flags
+  enable_embedding: true
+  enable_public_sharing: false
+  enable_audit_app: true
+
+# =============================================================================
+# FILE PATHS
+# =============================================================================
+paths:
+  downloads: downloads
+  data: data
+  logs: logs
+  temp: temp
+
+# =============================================================================
+# FILE PATTERNS
+# =============================================================================
+file_patterns:
+  enem_csv_pattern: MICRODADOS_ENEM_*.csv
+  enem_zip_pattern: MICRODADOS_ENEM_*.zip
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+logging:
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  file_rotation: "1 day"
+  file_retention: "30 days"
+
+# =============================================================================
+# DATABASE CONFIGURATION
+# =============================================================================
+database:
+  # ETL Database (for storing ENEM microdata)
+  etl:
+    host: ${DB_HOST:-localhost}
+    port: ${DB_PORT:-5433}
+    database: ${DB_NAME:-enem_data}
+    user: ${DB_USER:-enem_etl_user}
+    password: ${DB_PASSWORD}
+  
+  # Airflow Database (for Airflow metadata)
+  airflow:
+    host: ${AIRFLOW_DB_HOST:-localhost}
+    port: ${AIRFLOW_DB_PORT:-5432}
+    database: ${AIRFLOW_DB_NAME:-airflow}
+    user: ${AIRFLOW_DB_USER:-enem_user}
+    password: ${AIRFLOW_DB_PASSWORD}
+  
+  # Metabase Database (for Metabase metadata)
+  metabase:
+    host: ${METABASE_DB_HOST:-localhost}
+    port: ${METABASE_DB_PORT:-5434}
+    database: ${METABASE_DB_NAME:-metabase}
+    user: ${METABASE_DB_USER:-metabase_user}
+    password: ${METABASE_DB_PASSWORD}
+
+# =============================================================================
+# VALIDATION SETTINGS
+# =============================================================================
+validation:
+  strict_mode: false
+  allow_missing_columns: true
+  max_error_threshold: 0.01
+
+# =============================================================================
+# DEVELOPMENT SETTINGS
+# =============================================================================
+development:
+  test_mode: false
+  verbose_errors: true
+  debug: false
+  cleanup_after_tests: true
+  mock_external_services: false
