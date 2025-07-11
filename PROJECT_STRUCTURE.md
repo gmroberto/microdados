@@ -42,7 +42,7 @@ Contains all configuration files for the project, including the unified configur
 
 ```
 config/
-├── 📄 airflow_init.py         # Airflow initialization script
+├── 📄 (removed)               # Airflow initialization now automatic
 ├── 📄 config.yml              # Unified configuration file
 ├── 📄 defaulted_columns.json  # Default column mappings
 ├── 📄 download_history.json   # Download tracking metadata
@@ -55,7 +55,7 @@ config/
 
 - **`config.yml`**: Single source of truth for all configuration settings
 - **`env.template`**: Template for environment variables (copy to `.env`)
-- **`airflow_init.py`**: Initializes Airflow variables and connections
+- **`entrypoint.py`**: Handles automatic database initialization and user creation
 - **`schemas/enem_tables.yml`**: Defines database table structures and indexes
 
 ## 🚀 Airflow DAGs Directory (`dags/`)

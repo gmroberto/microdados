@@ -53,12 +53,12 @@ class DatabaseManager:
         logger.info(f"Attempting to connect to database: {safe_connection_string}")
         
         try:
-            # Create engine with proper PostgreSQL configuration
+            # Create engine with proper PostgreSQL configuration for Portuguese text
             self.engine = create_engine(
                 self.connection_string,
                 connect_args={
-                    'client_encoding': 'utf8',
-                    'options': '-c client_encoding=utf8'
+                    'client_encoding': 'latin1',  # Use Latin encoding for Portuguese
+                    'options': '-c client_encoding=latin1'
                 },
                 # Add additional parameters for connection management
                 pool_pre_ping=True,
@@ -66,10 +66,10 @@ class DatabaseManager:
             )
             # Test the connection with explicit encoding handling
             with self.engine.connect() as conn:
-                # Set encoding explicitly on the connection
-                conn.execute(text("SET client_encoding TO 'UTF8'"))
+                # Set encoding explicitly on the connection for Portuguese text
+                conn.execute(text("SET client_encoding TO 'LATIN1'"))
                 conn.execute(text("SELECT 1"))
-            logger.info("Database connection established successfully")
+            logger.info("Database connection established successfully with Latin encoding")
         except Exception as e:
             logger.error(f"Failed to connect to database: {e}")
             logger.error(f"Connection string (without password): {safe_connection_string}")
@@ -90,7 +90,7 @@ class DatabaseManager:
         """Load table schema from YAML file."""
         schema_path = config_manager.get_schema_path()
         try:
-            with open(schema_path, 'r') as f:
+            with open(schema_path, 'r', encoding='utf-8') as f:
                 schemas = yaml.safe_load(f)
             return schemas.get(table_name, {})
         except Exception as e:
@@ -174,66 +174,103 @@ class DatabaseManager:
     
     def insert_data(self, table_name: str, df: pd.DataFrame) -> None:
         """Insert DataFrame into table using PostgreSQL COPY."""
-        schema = self.load_schema(table_name)
-        columns = schema.get('columns', {})
-        
-        # Prepare DataFrame for insertion
-        df_prepared = self._prepare_dataframe(df, columns)
-        
-        buffer = StringIO()
-        df_prepared.to_csv(buffer, index=False, header=False, sep='\t', na_rep='\\N')
-        buffer.seek(0)
-        
-        with self.engine.connect() as conn:
-            raw_conn = conn.connection.driver_connection
-            with raw_conn.cursor() as cursor:
-                cursor.copy_from(
-                    buffer,
-                    table_name,
-                    sep='\t',
-                    null='\\N',
-                    columns=df_prepared.columns.tolist()
-                )
-            raw_conn.commit()
-    
-    def _prepare_dataframe(self, df: pd.DataFrame, schema: Dict[str, str]) -> pd.DataFrame:
-        """Prepare DataFrame for database insertion."""
-        df_copy = df.copy()
-        
-        for column, pg_type in schema.items():
-            if column not in df_copy.columns:
-                continue
+        try:
+            logger.debug(f"Inserting data into {table_name}")
+            logger.debug(f"DataFrame shape: {df.shape}")
+            logger.debug(f"DataFrame columns: {list(df.columns)}")
+            
+            buffer = StringIO()
+            df.to_csv(buffer, index=False, header=False, sep='\t', na_rep='\\N')
+            buffer.seek(0)
+            
+            with self.engine.connect() as conn:
+                raw_conn = conn.connection.driver_connection
+                with raw_conn.cursor() as cursor:
+                    cursor.copy_from(
+                        buffer,
+                        table_name,
+                        sep='\t',
+                        null='\\N',
+                        columns=df.columns.tolist()
+                    )
+                raw_conn.commit()
                 
-            pg_type = pg_type.upper()
-            if pg_type == 'BOOLEAN':
-                df_copy[column] = df_copy[column].map({'1': 'true', '0': 'false'})
-            elif pg_type in ('INTEGER', 'BIGINT'):
-                df_copy[column] = pd.to_numeric(df_copy[column], errors='coerce')
-                mask = df_copy[column].notna()
-                df_copy.loc[mask, column] = df_copy.loc[mask, column].apply(
-                    lambda x: str(int(x)) if not pd.isna(x) else '\\N'
-                )
-                df_copy[column] = df_copy[column].fillna('\\N')
-            elif pg_type in ('DOUBLE PRECISION', 'DECIMAL', 'FLOAT'):
-                df_copy[column] = pd.to_numeric(df_copy[column], errors='coerce')
-                df_copy[column] = df_copy[column].astype(str).replace({'nan': '\\N'})
-                df_copy[column] = df_copy[column].apply(
-                    lambda x: x.replace(',', '.') if x != '\\N' else x
-                )
-        
-        return df_copy.replace({'nan': '\\N', 'None': '\\N'})
+            logger.debug(f"Successfully inserted {len(df)} rows into {table_name}")
+            
+        except Exception as e:
+            logger.error(f"Error inserting data into {table_name}: {e}")
+            logger.error(f"DataFrame shape: {df.shape}")
+            logger.error(f"DataFrame columns: {list(df.columns)}")
+            
+            # Log sample data for debugging
+            if not df.empty:
+                logger.error(f"Sample data (first row): {df.iloc[0].to_dict()}")
+            
+            raise
     
-    def execute_query(self, query: str) -> None:
-        """Execute a SQL query."""
+
+    
+    def execute_query(self, query: str, params: tuple = None) -> list:
+        """Execute a SQL query and return results."""
         try:
             logger.debug(f"Executing query: {query}")
-            with self.engine.begin() as conn:
-                conn.execute(text(query))
-            logger.debug("Query executed successfully")
+            with self.engine.connect() as conn:
+                if params:
+                    # Convert %s placeholders to :param style for SQLAlchemy
+                    formatted_query = query
+                    for i, param in enumerate(params):
+                        formatted_query = formatted_query.replace('%s', f':param_{i}', 1)
+                    param_dict = {f'param_{i}': param for i, param in enumerate(params)}
+                    result = conn.execute(text(formatted_query), param_dict)
+                else:
+                    result = conn.execute(text(query))
+                
+                # Fetch all results if it's a SELECT query
+                if query.strip().upper().startswith('SELECT'):
+                    rows = result.fetchall()
+                    logger.debug(f"Query returned {len(rows)} rows")
+                    return rows
+                else:
+                    logger.debug("Query executed successfully")
+                    return []
+                    
         except Exception as e:
             logger.error(f"Error executing query: {e}")
             logger.error(f"Query: {query}")
+            logger.error(f"Params: {params}")
             raise
+    
+    def execute_batch_simple(self, query: str, data: list) -> None:
+        """Execute batch insert/update operations using direct psycopg2."""
+        try:
+            logger.debug(f"Executing batch query: {query}")
+            logger.debug(f"Data size: {len(data)}")
+            
+            with self.engine.connect() as conn:
+                raw_conn = conn.connection.driver_connection
+                with raw_conn.cursor() as cursor:
+                    # Set encoding explicitly for Portuguese text
+                    cursor.execute("SET client_encoding TO 'LATIN1'")
+                    
+                    # Execute batch insert
+                    cursor.executemany(query, data)
+                    
+                raw_conn.commit()
+            
+            logger.debug("Batch query executed successfully")
+        except Exception as e:
+            logger.error(f"Error executing batch query: {e}")
+            logger.error(f"Query: {query}")
+            logger.error(f"Data size: {len(data)}")
+            
+            # Log sample data for debugging
+            if data and len(data) > 0:
+                logger.error(f"Sample data row: {data[0]}")
+                logger.error(f"Sample data types: {[type(val) for val in data[0]]}")
+            
+            raise
+
+
     
     def create_indexes(self, table_name: str) -> None:
         """Create indexes for the table."""

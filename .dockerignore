@@ -59,8 +59,8 @@ tests/
 .coverage
 htmlcov/
 
-# Logs
-logs/
+# Logs (keep directory structure but ignore log files)
+logs/*.log
 *.log
 
 # Data (will be mounted as volumes)

@@ -14,6 +14,58 @@ from config import get_path, get_setting
 # Set up logging
 logger = logging.getLogger(__name__)
 
+def _detect_and_read_csv(file_path: Path, chunk_size: int = 10000):
+    """
+    Read CSV file with automatic encoding and delimiter detection.
+    Tries multiple encodings and delimiters to handle different file formats.
+    Default encoding is Latin for Portuguese text.
+    """
+    # Start with Latin encodings for Portuguese text
+    encodings = ['latin-1', 'iso-8859-1', 'cp1252', 'utf-8', 'utf-8-sig']
+    delimiters = [';', ',']  # ENEM files typically use semicolons
+    
+    for encoding in encodings:
+        for delimiter in delimiters:
+            try:
+                # Try reading just the header to check column count
+                df = pd.read_csv(file_path, encoding=encoding, sep=delimiter, nrows=1)
+                if len(df.columns) > 1:
+                    # If more than one column, use this delimiter
+                    logger.debug(f"Detected encoding={encoding}, delimiter='{delimiter}' for {file_path}")
+                    for chunk in pd.read_csv(
+                        file_path, 
+                        chunksize=chunk_size, 
+                        low_memory=False, 
+                        encoding=encoding, 
+                        sep=delimiter,
+                        na_values=['', 'nan', 'NaN', 'NULL', 'null'],
+                        keep_default_na=False
+                    ):
+                        yield chunk
+                    return
+            except Exception as e:
+                logger.debug(f"Failed with encoding={encoding}, delimiter='{delimiter}': {e}")
+                continue
+    
+    # Fallback: try with error handling and semicolon
+    logger.warning(f"All encoding/delimiter combinations failed for {file_path}, trying fallback with error handling")
+    try:
+        for chunk in pd.read_csv(
+            file_path, 
+            chunksize=chunk_size, 
+            low_memory=False, 
+            encoding='latin-1', 
+            errors='replace', 
+            sep=';',
+            na_values=['', 'nan', 'NaN', 'NULL', 'null'],
+            keep_default_na=False
+        ):
+            yield chunk
+        logger.warning(f"Successfully read {file_path} with fallback error handling")
+    except Exception as e:
+        logger.error(f"Failed to read {file_path} even with fallback error handling: {e}")
+        raise
+
 class ENEMLoader:
     """
     Handles loading ENEM microdata CSV files into PostgreSQL database.
@@ -91,18 +143,40 @@ class ENEMLoader:
             # Read CSV file
             logger.info(f"Loading {file_path} into table {table_name}")
             
-            # Load data in chunks to handle large files
+            # Load data in chunks to handle large files with automatic encoding detection
             chunk_count = 0
-            for chunk in pd.read_csv(file_path, chunksize=self.chunk_size, low_memory=False):
+            for chunk in _detect_and_read_csv(file_path, self.chunk_size):
                 chunk_count += 1
                 logger.debug(f"Processing chunk {chunk_count} of {file_path}")
                 
                 # Create table if it doesn't exist (only for first chunk)
                 if chunk_count == 1:
-                    self._create_table_if_not_exists(table_name, chunk)
+                    try:
+                        self.db_manager.create_table(table_name, chunk, drop_if_exists=False)
+                    except Exception as e:
+                        logger.error(f"Error creating table {table_name}: {e}")
+                        raise
                 
-                # Insert chunk data
-                self._insert_chunk(table_name, chunk)
+                # Prepare and insert chunk data
+                if not chunk.empty:
+                    try:
+                        # Clean column names to match schema
+                        chunk.columns = [col.strip().lower().replace(' ', '_') for col in chunk.columns]
+                        
+                        # Prepare the data for database insertion
+                        prepared_chunk = self._prepare_dataframe(chunk, table_name)
+                        
+                        # Use the database manager's insert_data method
+                        self.db_manager.insert_data(table_name, prepared_chunk)
+                        
+                        logger.debug(f"Successfully inserted chunk with {len(chunk)} rows into {table_name}")
+                    except Exception as e:
+                        logger.error(f"Error inserting chunk into {table_name}: {e}")
+                        logger.error(f"Chunk shape: {chunk.shape}")
+                        logger.error(f"Chunk columns: {list(chunk.columns)}")
+                        raise
+                else:
+                    logger.warning(f"No data to insert for chunk in {table_name}")
             
             logger.info(f"Successfully loaded {file_path} ({chunk_count} chunks)")
             return True
@@ -112,91 +186,80 @@ class ENEMLoader:
             return False
     
     def _get_table_name_from_file(self, file_path: Path) -> str:
-        """Extract table name from CSV filename."""
+        """Extract table name from CSV filename and map to schema name."""
         # Remove extension and convert to lowercase
-        table_name = file_path.stem.lower()
+        base_name = file_path.stem.lower()
         
         # Replace spaces and special characters with underscores
-        table_name = table_name.replace(' ', '_').replace('-', '_')
+        base_name = base_name.replace(' ', '_').replace('-', '_')
         
-        return table_name
-    
-    def _create_table_if_not_exists(self, table_name: str, df: pd.DataFrame) -> None:
-        """Create table if it doesn't exist."""
-        try:
-            # Check if table exists
-            check_query = """
-                SELECT EXISTS (
-                    SELECT FROM information_schema.tables 
-                    WHERE table_schema = 'public' 
-                    AND table_name = %s
-                )
-            """
-            result = self.db_manager.execute_query(check_query, (table_name,))
-            table_exists = result[0][0] if result else False
-            
-            if table_exists:
-                logger.debug(f"Table {table_name} already exists")
-                return
-            
-            # Create table based on DataFrame structure
-            columns = []
-            for col_name, dtype in df.dtypes.items():
-                # Map pandas dtypes to PostgreSQL types
-                pg_type = self._map_pandas_to_postgresql_type(dtype)
-                columns.append(f"{col_name} {pg_type}")
-            
-            create_sql = f"""
-                CREATE TABLE {table_name} (
-                    {', '.join(columns)}
-                )
-            """
-            
-            self.db_manager.execute_query(create_sql)
-            logger.info(f"Created table {table_name}")
-            
-        except Exception as e:
-            logger.error(f"Error creating table {table_name}: {e}")
-            raise
-    
-    def _map_pandas_to_postgresql_type(self, dtype) -> str:
-        """Map pandas data types to PostgreSQL types."""
-        if pd.api.types.is_integer_dtype(dtype):
-            return 'INTEGER'
-        elif pd.api.types.is_float_dtype(dtype):
-            return 'DOUBLE PRECISION'
-        elif pd.api.types.is_bool_dtype(dtype):
-            return 'BOOLEAN'
-        elif pd.api.types.is_datetime64_any_dtype(dtype):
-            return 'TIMESTAMP'
+        # Map CSV filenames to schema table names
+        # The schemas use 'enem_microdado_YYYY' format
+        if 'microdados_enem_' in base_name:
+            # Extract year from filename like 'microdados_enem_2001'
+            year = base_name.split('_')[-1]
+            table_name = f'enem_microdado_{year}'
+            logger.debug(f"Mapped filename {base_name} to schema table {table_name}")
+            return table_name
         else:
-            return 'TEXT'
+            # Fallback to original name if no mapping found
+            logger.warning(f"No mapping found for filename {base_name}, using as-is")
+            return base_name
     
-    def _insert_chunk(self, table_name: str, chunk: pd.DataFrame) -> None:
-        """Insert a chunk of data into the table."""
-        try:
-            # Convert DataFrame to list of tuples for insertion
-            data = [tuple(row) for row in chunk.values]
+
+    
+
+    
+    def _prepare_dataframe(self, df: pd.DataFrame, table_name: str) -> pd.DataFrame:
+        """Prepare DataFrame for database insertion."""
+        df_copy = df.copy()
+        
+        # Load schema for this table
+        schema = self.db_manager.load_schema(table_name)
+        columns = schema.get('columns', {})
+        
+        # Define missing value indicators common in ENEM data
+        missing_indicators = ['*', '**', '***', '****', '*****', 'nan', 'NaN', 'NULL', 'null', 'None', '']
+        
+        logger.debug(f"Preparing DataFrame with {len(df_copy)} rows and {len(df_copy.columns)} columns")
+        logger.debug(f"Schema types: {schema}")
+        
+        for column, pg_type in columns.items():
+            if column not in df_copy.columns:
+                logger.debug(f"Column {column} not found in DataFrame, skipping")
+                continue
+                
+            pg_type = pg_type.upper()
+            logger.debug(f"Processing column {column} with type {pg_type}")
             
-            if not data:
-                return
+            # First, replace missing indicators with NaN
+            df_copy[column] = df_copy[column].replace(missing_indicators, pd.NA)
             
-            # Build INSERT query
-            columns = list(chunk.columns)
-            placeholders = ', '.join(['%s'] * len(columns))
-            columns_str = ', '.join(columns)
-            
-            insert_sql = f"""
-                INSERT INTO {table_name} ({columns_str})
-                VALUES ({placeholders})
-            """
-            
-            # Execute batch insert
-            self.db_manager.execute_batch(insert_sql, data)
-            
-        except Exception as e:
-            logger.error(f"Error inserting chunk into {table_name}: {e}")
-            raise
+            if pg_type == 'BOOLEAN':
+                df_copy[column] = df_copy[column].map({'1': 'true', '0': 'false'})
+            elif pg_type in ('INTEGER', 'BIGINT'):
+                # Convert to numeric, coercing errors to NaN
+                df_copy[column] = pd.to_numeric(df_copy[column], errors='coerce')
+                # Convert valid numbers to strings, NaN to \N
+                df_copy[column] = df_copy[column].apply(
+                    lambda x: str(int(x)) if pd.notna(x) else '\\N'
+                )
+            elif pg_type in ('DOUBLE PRECISION', 'DECIMAL', 'FLOAT'):
+                # Convert to numeric, coercing errors to NaN
+                df_copy[column] = pd.to_numeric(df_copy[column], errors='coerce')
+                # Convert valid numbers to strings with proper decimal format, NaN to \N
+                df_copy[column] = df_copy[column].apply(
+                    lambda x: str(float(x)).replace(',', '.') if pd.notna(x) else '\\N'
+                )
+            else:
+                # For TEXT columns, replace NaN with \N
+                df_copy[column] = df_copy[column].fillna('\\N')
+        
+        # Final cleanup: replace any remaining NaN values with \N
+        result = df_copy.replace({pd.NA: '\\N', 'nan': '\\N', 'None': '\\N'})
+        
+        logger.debug(f"DataFrame preparation completed")
+        return result
     
     def create_united_table(self, table_name: str = None, drop_if_exists: bool = False) -> bool:
         """

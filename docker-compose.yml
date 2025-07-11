@@ -17,6 +17,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    restart: unless-stopped
 
   # PostgreSQL Database for ETL Data
   postgres-etl:
@@ -34,6 +35,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    restart: unless-stopped
 
   # PostgreSQL Database for Metabase
   postgres-metabase:
@@ -51,6 +53,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    restart: unless-stopped
 
   # Metabase Application
   metabase:
@@ -75,9 +78,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 60s
-
-
+      start_period: 120s
+    restart: unless-stopped
 
   # Airflow Webserver
   airflow-webserver:
@@ -87,25 +89,42 @@ services:
         condition: service_healthy
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://enem_user:enem_password@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://enem_user:enem_password@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_HOST: postgres
+      AIRFLOW__DATABASE__SQL_ALCHEMY_DATABASE: airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_USER: enem_user
+      AIRFLOW__DATABASE__SQL_ALCHEMY_PASSWORD: enem_password
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__WEBSERVER__SECRET_KEY: your-secret-key-here
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/plugins
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
+      AIRFLOW__CORE__FERNET_KEY: your-fernet-key-here
+      AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: 600
+      AIRFLOW__CORE__DAG_FILE_PROCESSOR_MAX_FILE_PROCESS_TIME: 600
+      # Pool configuration to prevent default pool issues
+      AIRFLOW__CORE__DEFAULT_POOL_NAME: "default_pool"
+      AIRFLOW__CORE__DEFAULT_POOL_SLOTS: 128
+      AIRFLOW__CORE__DEFAULT_POOL_DESCRIPTION: "Default pool for tasks"
     ports:
       - "8080:8080"
     volumes:
-      - ./dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags:ro
       - ./logs:/opt/airflow/logs
-      - ./plugins:/opt/airflow/plugins
-      - ./config:/opt/airflow/config
+      - ./plugins:/opt/airflow/plugins:ro
+      - ./config:/opt/airflow/config:ro
       - ./data:/opt/airflow/data
       - ./downloads:/opt/airflow/downloads
-      - ./src:/opt/airflow/src
+      - ./src:/opt/airflow/src:ro
     command: webserver
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 120s
+    restart: unless-stopped
+    user: "50000:0"
 
   # Airflow Scheduler
   airflow-scheduler:
@@ -113,21 +132,35 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      airflow-webserver:
-        condition: service_healthy
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://enem_user:enem_password@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://enem_user:enem_password@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_HOST: postgres
+      AIRFLOW__DATABASE__SQL_ALCHEMY_DATABASE: airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_USER: enem_user
+      AIRFLOW__DATABASE__SQL_ALCHEMY_PASSWORD: enem_password
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/plugins
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
+      AIRFLOW__CORE__FERNET_KEY: your-fernet-key-here
+      AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: 600
+      AIRFLOW__CORE__DAG_FILE_PROCESSOR_MAX_FILE_PROCESS_TIME: 600
+      # Pool configuration to prevent default pool issues
+      AIRFLOW__CORE__DEFAULT_POOL_NAME: "default_pool"
+      AIRFLOW__CORE__DEFAULT_POOL_SLOTS: 128
+      AIRFLOW__CORE__DEFAULT_POOL_DESCRIPTION: "Default pool for tasks"
     volumes:
-      - ./dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags:ro
       - ./logs:/opt/airflow/logs
-      - ./plugins:/opt/airflow/plugins
-      - ./config:/opt/airflow/config
+      - ./plugins:/opt/airflow/plugins:ro
+      - ./config:/opt/airflow/config:ro
       - ./data:/opt/airflow/data
       - ./downloads:/opt/airflow/downloads
-      - ./src:/opt/airflow/src
+      - ./src:/opt/airflow/src:ro
     command: scheduler
+    restart: unless-stopped
+    user: "50000:0"
 
 volumes:
   postgres_data:

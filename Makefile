@@ -97,8 +97,8 @@ airflow-logs: ## View logs from all Airflow services
 airflow-restart: ## Restart all Airflow services
 	docker-compose restart
 
-airflow-init: ## Initialize Airflow variables
-	docker-compose exec airflow-webserver python config/airflow_init.py
+airflow-init: ## Initialize Airflow variables (now automatic)
+	@echo "Airflow initialization is now automatic when services start"
 
 # Docker Commands
 docker-build: ## Build Docker image

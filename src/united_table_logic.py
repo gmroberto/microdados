@@ -31,7 +31,7 @@ class UnitedTableLogic:
         Args:
             table_name: Name of the united table (defaults to config setting)
         """
-        from config import get_setting
+        from config import get_setting, config_manager
         
         self.table_name = table_name or get_setting('united_table_name', 'enem_microdado_2011_2023')
         self.db_manager = DatabaseManager()
@@ -40,8 +40,8 @@ class UnitedTableLogic:
     def _load_schemas(self) -> Dict[str, Any]:
         """Load table schemas from configuration."""
         try:
-            from config import get_schema_path
-            schema_path = get_schema_path()
+            from config import config_manager
+            schema_path = config_manager.get_schema_path()
             
             if not schema_path.exists():
                 logger.warning(f"Schema file not found: {schema_path}")

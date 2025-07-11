@@ -41,7 +41,7 @@ class ENEMDownloader:
         """Load download history from JSON file."""
         if self.history_file.exists():
             try:
-                with open(self.history_file, 'r') as f:
+                with open(self.history_file, 'r', encoding='utf-8') as f:
                     return json.load(f)
             except json.JSONDecodeError:
                 pass

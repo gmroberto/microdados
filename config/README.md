@@ -6,7 +6,7 @@ This directory contains all configuration files for the ENEM Microdata ETL Pipel
 
 - **`config.yml`** - Unified configuration file with environment variable support
 - **`env.template`** - Template for environment variables (copy to `.env`)
-- **`airflow_init.py`** - Airflow initialization script
+- **`entrypoint.py`** - Automatic database initialization (in root)
 - **`download_history.json`** - Tracks downloaded files and their metadata
 - **`defaulted_columns.json`** - Default column mappings for data processing
 - **`schemas/`** - Database schema definitions

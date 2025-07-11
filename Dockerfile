@@ -14,22 +14,33 @@ RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     libpq-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
+
+# Create necessary directories with proper permissions
+RUN mkdir -p /opt/airflow/data/raw \
+    /opt/airflow/data/processed \
+    /opt/airflow/downloads \
+    /opt/airflow/logs \
+    /opt/airflow/plugins \
+    /opt/airflow/logs/dag_processor_manager \
+    /opt/airflow/logs/scheduler
+
+# Set proper permissions for Airflow directories
+RUN chown -R airflow:root /opt/airflow && \
+    chmod -R 755 /opt/airflow
 
 # Switch back to airflow user
 USER airflow
 
 # Copy requirements files
-COPY requirements.txt requirements-test.txt ./
+COPY requirements.txt ./
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
 COPY . .
-
-# Create necessary directories
-RUN mkdir -p data/raw data/processed downloads logs plugins
 
 # Set the entrypoint
 ENTRYPOINT ["python", "entrypoint.py"]

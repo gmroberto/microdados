@@ -65,7 +65,7 @@ class ConfigManager:
                 f"Please ensure the config.yml file exists in the config directory."
             )
         
-        with open(config_file, 'r') as f:
+        with open(config_file, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f) or {}
         
         # Resolve relative paths to absolute paths
