@@ -33,7 +33,6 @@ airflow:
             2021, 2022, 2023]
   
   # Web server settings
-  webserver_secret_key: ${AIRFLOW__WEBSERVER__SECRET_KEY}
   load_examples: false
   
   # Task settings
@@ -99,15 +98,15 @@ logging:
 database:
   # ETL Database (for storing ENEM microdata)
   etl:
-    host: ${DB_HOST:-localhost}
-    port: ${DB_PORT:-5433}
+    host: ${DB_HOST:-postgres-etl}
+    port: ${DB_PORT:-5432}
     database: ${DB_NAME:-enem_data}
     user: ${DB_USER:-enem_etl_user}
     password: ${DB_PASSWORD}
   
   # Airflow Database (for Airflow metadata)
   airflow:
-    host: ${AIRFLOW_DB_HOST:-localhost}
+    host: ${AIRFLOW_DB_HOST:-postgres}
     port: ${AIRFLOW_DB_PORT:-5432}
     database: ${AIRFLOW_DB_NAME:-airflow}
     user: ${AIRFLOW_DB_USER:-enem_user}
@@ -115,8 +114,8 @@ database:
   
   # Metabase Database (for Metabase metadata)
   metabase:
-    host: ${METABASE_DB_HOST:-localhost}
-    port: ${METABASE_DB_PORT:-5434}
+    host: ${METABASE_DB_HOST:-postgres-metabase}
+    port: ${METABASE_DB_PORT:-5432}
     database: ${METABASE_DB_NAME:-metabase}
     user: ${METABASE_DB_USER:-metabase_user}
     password: ${METABASE_DB_PASSWORD}

@@ -68,7 +68,6 @@ services:
       MB_DB_USER: metabase_user
       MB_DB_PASS: metabase_password
       MB_DB_HOST: postgres-metabase
-      MB_ENCRYPTION_SECRET_KEY: your-metabase-secret-key-here
     ports:
       - "3000:3000"
     volumes:
@@ -95,17 +94,21 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_USER: enem_user
       AIRFLOW__DATABASE__SQL_ALCHEMY_PASSWORD: enem_password
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      AIRFLOW__WEBSERVER__SECRET_KEY: your-secret-key-here
       AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
       AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/plugins
       AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
-      AIRFLOW__CORE__FERNET_KEY: your-fernet-key-here
       AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: 600
       AIRFLOW__CORE__DAG_FILE_PROCESSOR_MAX_FILE_PROCESS_TIME: 600
       # Pool configuration to prevent default pool issues
       AIRFLOW__CORE__DEFAULT_POOL_NAME: "default_pool"
       AIRFLOW__CORE__DEFAULT_POOL_SLOTS: 128
       AIRFLOW__CORE__DEFAULT_POOL_DESCRIPTION: "Default pool for tasks"
+      # ETL Database connection for Airflow tasks
+      DB_HOST: ${DB_HOST:-postgres-etl}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-enem_data}
+      DB_USER: ${DB_USER:-enem_etl_user}
+      DB_PASSWORD: ${DB_PASSWORD:-enem_etl_password}
     ports:
       - "8080:8080"
     volumes:
@@ -143,13 +146,18 @@ services:
       AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
       AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/plugins
       AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/logs
-      AIRFLOW__CORE__FERNET_KEY: your-fernet-key-here
       AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: 600
       AIRFLOW__CORE__DAG_FILE_PROCESSOR_MAX_FILE_PROCESS_TIME: 600
       # Pool configuration to prevent default pool issues
       AIRFLOW__CORE__DEFAULT_POOL_NAME: "default_pool"
       AIRFLOW__CORE__DEFAULT_POOL_SLOTS: 128
       AIRFLOW__CORE__DEFAULT_POOL_DESCRIPTION: "Default pool for tasks"
+      # ETL Database connection for Airflow tasks
+      DB_HOST: ${DB_HOST:-postgres-etl}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-enem_data}
+      DB_USER: ${DB_USER:-enem_etl_user}
+      DB_PASSWORD: ${DB_PASSWORD:-enem_etl_password}
     volumes:
       - ./dags:/opt/airflow/dags:ro
       - ./logs:/opt/airflow/logs

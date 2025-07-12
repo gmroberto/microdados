@@ -20,7 +20,7 @@ class UnitedTableLogic:
     
     This class provides functionality to:
     - Create a unified table schema
-    - Populate the table with data from multiple years
+    - Populate the table with data from years 2011-2023 only
     - Create optimized indexes for performance
     """
     
@@ -67,8 +67,20 @@ class UnitedTableLogic:
             'indexes': [idx.get('name', '') for idx in indexes]
         }
     
+    def _extract_year_from_table_name(self, table_name: str) -> Optional[int]:
+        """Extract year from table name like 'enem_microdado_2011'."""
+        try:
+            # Extract year from table name (assuming format: enem_microdado_YYYY)
+            parts = table_name.split('_')
+            if len(parts) >= 2:
+                year_str = parts[-1]  # Get the last part as year
+                return int(year_str)
+        except (ValueError, IndexError):
+            pass
+        return None
+    
     def _get_year_tables(self) -> List[str]:
-        """Get list of year-specific tables that exist in the database."""
+        """Get list of year-specific tables that exist in the database (2011-2023 only)."""
         try:
             query = """
                 SELECT table_name 
@@ -79,7 +91,19 @@ class UnitedTableLogic:
                 ORDER BY table_name
             """
             result = self.db_manager.execute_query(query, (self.table_name,))
-            return [row[0] for row in result] if result else []
+            all_tables = [row[0] for row in result] if result else []
+            
+            # Filter tables to only include years 2011-2023
+            filtered_tables = []
+            for table_name in all_tables:
+                year = self._extract_year_from_table_name(table_name)
+                if year and 2011 <= year <= 2023:
+                    filtered_tables.append(table_name)
+                elif year:
+                    logger.info(f"Skipping table {table_name} (year {year} outside range 2011-2023)")
+            
+            logger.info(f"Found {len(filtered_tables)} tables for years 2011-2023: {filtered_tables}")
+            return filtered_tables
         except Exception as e:
             logger.error(f"Error getting year tables: {e}")
             return []
@@ -191,7 +215,7 @@ class UnitedTableLogic:
     
     def populate_united_table(self) -> bool:
         """
-        Populate the united table with data from year-specific tables.
+        Populate the united table with data from year-specific tables (2011-2023 only).
         
         Returns:
             True if population was successful, False otherwise
@@ -257,12 +281,15 @@ class UnitedTableLogic:
                 logger.warning(f"No indexes defined in schema for {self.table_name}")
                 return True
             
-            for index_config in indexes:
-                index_name = index_config.get('name')
-                index_columns = index_config.get('columns', [])
+            for i, index_config in enumerate(indexes):
+                index_columns = index_config.get('index_columns', [])
                 
-                if not index_name or not index_columns:
+                if not index_columns:
+                    logger.warning(f"No index_columns found in index config {i}")
                     continue
+                
+                # Generate index name if not provided
+                index_name = f"idx_{self.table_name}_{'_'.join(index_columns)}"
                 
                 # Check if index already exists
                 check_query = """
@@ -282,7 +309,7 @@ class UnitedTableLogic:
                 columns_str = ', '.join(index_columns)
                 create_index_sql = f"CREATE INDEX {index_name} ON {self.table_name} ({columns_str})"
                 self.db_manager.execute_query(create_index_sql)
-                logger.info(f"Created index {index_name}")
+                logger.info(f"Created index {index_name} on columns: {columns_str}")
             
             logger.info(f"Successfully created indexes for united table: {self.table_name}")
             return True

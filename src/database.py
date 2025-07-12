@@ -278,12 +278,29 @@ class DatabaseManager:
         indexes = schema.get('indexes', [])
         
         with self.engine.begin() as conn:
-            for index in indexes:
+            for i, index in enumerate(indexes):
                 columns = index.get('index_columns', [])
-                for column in columns:
-                    index_name = f"idx_{table_name}_{column}"
-                    create_index_sql = f"CREATE INDEX {index_name} ON {table_name} ({column})"
-                    conn.execute(text(create_index_sql))
+                if not columns:
+                    logger.warning(f"No index_columns found in index config {i} for table {table_name}")
+                    continue
+                
+                # Generate index name
+                index_name = f"idx_{table_name}_{'_'.join(columns)}"
+                
+                # Check if index already exists
+                check_query = "SELECT EXISTS (SELECT FROM pg_indexes WHERE indexname = :index_name)"
+                result = conn.execute(text(check_query), {"index_name": index_name})
+                index_exists = result.scalar()
+                
+                if index_exists:
+                    logger.info(f"Index {index_name} already exists, skipping")
+                    continue
+                
+                # Create index
+                columns_str = ', '.join(columns)
+                create_index_sql = f"CREATE INDEX {index_name} ON {table_name} ({columns_str})"
+                conn.execute(text(create_index_sql))
+                logger.info(f"Created index {index_name} on columns: {columns_str}")
     
     def table_exists(self, table_name: str) -> bool:
         """Check if a table exists in the database."""
