@@ -36,12 +36,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_pipeline_summary_only',
+    'enem_pipeline_execution_summary_manual',
     default_args=default_args,
-    description='ENEM Pipeline Summary Phase - Manual Trigger Only',
+    description='Manual generation of ENEM pipeline execution summary and statistics',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'summary', 'manual'],
+    tags=['enem', 'summary', 'execution', 'statistics', 'manual'],
     max_active_runs=1,
 )
 

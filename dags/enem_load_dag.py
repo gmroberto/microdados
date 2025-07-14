@@ -35,12 +35,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_load_only',
+    'enem_database_load_manual',
     default_args=default_args,
-    description='ENEM Load Phase - Manual Trigger Only',
+    description='Manual loading of ENEM CSV files into database tables',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'load', 'manual'],
+    tags=['enem', 'load', 'database', 'csv', 'manual'],
     max_active_runs=1,
 )
 

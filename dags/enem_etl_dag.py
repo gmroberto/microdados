@@ -44,12 +44,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_etl_pipeline_advanced',
+    'enem_complete_etl_pipeline',
     default_args=default_args,
-    description='Advanced ENEM Microdata ETL Pipeline with Error Handling',
+    description='Complete ENEM microdata ETL pipeline: download, extract, load, and optimize',
     schedule_interval='@monthly',
     catchup=False,
-    tags=['enem', 'etl', 'microdata', 'advanced'],
+    tags=['enem', 'etl', 'microdata', 'pipeline', 'monthly'],
     max_active_runs=1,
 )
 

@@ -35,12 +35,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_create_indexes_only',
+    'enem_database_index_optimization_manual',
     default_args=default_args,
-    description='ENEM Create Indexes Phase - Manual Trigger Only',
+    description='Manual creation of database indexes for ENEM data performance optimization',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'indexes', 'manual'],
+    tags=['enem', 'indexes', 'database', 'performance', 'manual'],
     max_active_runs=1,
 )
 

@@ -1,7 +1,7 @@
 """
-ENEM Create United Table DAG for Apache Airflow.
-This DAG handles only the create united table phase of the ENEM ETL process.
-Can be manually triggered to create the unified table structure.
+ENEM Delete United Table DAG for Apache Airflow.
+This DAG handles only the delete united table phase of the ENEM ETL process.
+Can be manually triggered to clean up the united table.
 """
 
 import os
@@ -18,7 +18,7 @@ src_path = project_root / "src"
 sys.path.insert(0, str(src_path))
 
 # Import ETL operators from the dedicated module
-from etl_operators import create_united_table_operator
+from etl_operators import create_delete_united_table_operator
 
 # Default arguments for the DAG
 default_args = {
@@ -28,19 +28,19 @@ default_args = {
     'email_on_failure': True,
     'email_on_retry': True,
     'retries': 2,
-    'retry_delay': timedelta(minutes=10),
+    'retry_delay': timedelta(minutes=5),
     'retry_exponential_backoff': True,
     'max_retry_delay': timedelta(minutes=30),
 }
 
 # Create the DAG
 dag = DAG(
-    'enem_unified_table_creation_manual',
+    'enem_unified_table_cleanup_manual',
     default_args=default_args,
-    description='Manual creation of unified ENEM table structure for data consolidation',
+    description='Manual cleanup and removal of unified ENEM table',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'unified_table', 'database', 'manual'],
+    tags=['enem', 'cleanup', 'unified_table', 'database', 'manual'],
     max_active_runs=1,
 )
 
@@ -50,9 +50,9 @@ start_task = EmptyOperator(
     dag=dag,
 )
 
-# Create united table task
-create_united_table_task = create_united_table_operator(
-    task_id='create_united_table',
+# Delete United Table task
+delete_united_table_task = create_delete_united_table_operator(
+    task_id='delete_united_table_phase',
     dag=dag,
 )
 
@@ -62,4 +62,4 @@ end_task = EmptyOperator(
 )
 
 # Define the task dependencies
-start_task >> create_united_table_task >> end_task 
+start_task >> delete_united_table_task >> end_task 

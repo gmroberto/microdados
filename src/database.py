@@ -328,6 +328,30 @@ class DatabaseManager:
             logger.error(f"Error checking if table {table_name} has data: {e}")
             return False
     
+    def delete_table(self, table_name: str) -> bool:
+        """Delete a table from the database. Returns True if table was deleted, False if it didn't exist."""
+        try:
+            # Check if table exists first
+            if not self.table_exists(table_name):
+                logger.info(f"Table {table_name} does not exist, nothing to delete")
+                return False
+            
+            logger.info(f"Deleting table {table_name}")
+            
+            with self.engine.begin() as conn:
+                # Use CASCADE to also drop any dependent objects (indexes, constraints, etc.)
+                drop_sql = f"DROP TABLE {table_name} CASCADE"
+                logger.debug(f"Executing SQL: {drop_sql}")
+                conn.execute(text(drop_sql))
+                
+            logger.info(f"Successfully deleted table {table_name}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error deleting table {table_name}: {e}")
+            logger.error(f"Error type: {type(e).__name__}")
+            raise
+    
     def test_connection(self) -> bool:
         """Test database connection and return True if successful."""
         try:

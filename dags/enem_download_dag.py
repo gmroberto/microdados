@@ -35,12 +35,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_download_only',
+    'enem_microdata_download_manual',
     default_args=default_args,
-    description='ENEM Download Phase - Manual Trigger Only',
+    description='Manual download of ENEM microdata files from official sources',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'download', 'manual'],
+    tags=['enem', 'download', 'microdata', 'manual'],
     max_active_runs=1,
 )
 

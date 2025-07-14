@@ -36,12 +36,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'cleanup_csv_files',
+    'enem_csv_cleanup_maintenance',
     default_args=default_args,
-    description='Cleanup CSV files from downloads folder',
+    description='Weekly maintenance task to cleanup old CSV files from downloads folder',
     schedule_interval='@weekly',  # Run weekly to clean up old files
     catchup=False,
-    tags=['cleanup', 'csv', 'maintenance'],
+    tags=['enem', 'cleanup', 'csv', 'maintenance', 'weekly'],
     max_active_runs=1,
 )
 

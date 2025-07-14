@@ -35,12 +35,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_populate_united_table_only',
+    'enem_unified_table_population_manual',
     default_args=default_args,
-    description='ENEM Populate United Table Phase - Manual Trigger Only',
+    description='Manual population of unified ENEM table with consolidated data',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'united_table', 'manual'],
+    tags=['enem', 'unified_table', 'data_population', 'manual'],
     max_active_runs=1,
 )
 

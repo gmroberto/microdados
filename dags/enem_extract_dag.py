@@ -35,12 +35,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_extract_only',
+    'enem_zip_extraction_manual',
     default_args=default_args,
-    description='ENEM Extract Phase - Manual Trigger Only',
+    description='Manual extraction of ENEM ZIP files to CSV format',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'extract', 'manual'],
+    tags=['enem', 'extract', 'zip', 'csv', 'manual'],
     max_active_runs=1,
 )
 

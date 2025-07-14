@@ -16,6 +16,7 @@ from etl_functions import (
     create_united_table_structure,
     populate_united_table_data,
     create_database_indexes,
+    delete_united_table,
     cleanup_csv_files,
     generate_pipeline_summary
 )
@@ -98,6 +99,11 @@ def create_indexes(**context):
     return _execute_phase('indexes', create_database_indexes)(**context)
 
 
+def delete_united_table(**context):
+    """Delete United Table - Delete the unified table."""
+    return _execute_phase('delete_table', delete_united_table)(**context)
+
+
 def cleanup_phase(**context):
     """Cleanup Phase - Clean up CSV files from downloads directory."""
     return _execute_phase('cleanup', cleanup_csv_files)(**context)
@@ -174,6 +180,11 @@ def create_populate_united_table_operator(task_id='populate_united_table', **kwa
 def create_indexes_operator(task_id='create_indexes', **kwargs):
     """Create indexes operator."""
     return create_operator(task_id, create_indexes, **kwargs)
+
+
+def create_delete_united_table_operator(task_id='delete_united_table', **kwargs):
+    """Create delete united table operator."""
+    return create_operator(task_id, delete_united_table, **kwargs)
 
 
 def create_cleanup_operator(task_id='cleanup_phase', **kwargs):

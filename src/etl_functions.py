@@ -161,6 +161,25 @@ def create_database_indexes() -> Dict[str, Any]:
     return _execute_with_logging('create_indexes', _create_indexes)
 
 
+def delete_united_table() -> Dict[str, Any]:
+    """
+    Delete the unified table from the database.
+    
+    Returns:
+        Dict containing status and any error information.
+    """
+    def _delete_table():
+        loader = ENEMLoader()
+        success = loader.delete_table(UNITED_TABLE_NAME)
+        loader.close()
+        if success:
+            logger.info(f"Successfully deleted united table: {UNITED_TABLE_NAME}")
+        else:
+            logger.info(f"United table {UNITED_TABLE_NAME} did not exist, nothing to delete")
+    
+    return _execute_with_logging('delete_united_table', _delete_table)
+
+
 def cleanup_csv_files() -> Dict[str, Any]:
     """
     Clean up CSV files from the downloads directory.

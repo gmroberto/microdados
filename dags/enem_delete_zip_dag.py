@@ -35,12 +35,12 @@ default_args = {
 
 # Create the DAG
 dag = DAG(
-    'enem_delete_zip_only',
+    'enem_zip_file_cleanup_manual',
     default_args=default_args,
-    description='ENEM Delete ZIP Phase - Manual Trigger Only',
+    description='Manual cleanup of ZIP files after ENEM data extraction',
     schedule_interval=None,  # Manual trigger only
     catchup=False,
-    tags=['enem', 'cleanup', 'manual'],
+    tags=['enem', 'cleanup', 'zip', 'storage', 'manual'],
     max_active_runs=1,
 )
 
