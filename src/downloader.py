@@ -134,6 +134,41 @@ class ENEMDownloader:
             print(f"Error downloading {download_url}: {e}")
             return False
     
+    def download_year(self, year: str) -> bool:
+        """
+        Download ENEM microdata for a specific year.
+        
+        Args:
+            year: Year to download (e.g., '2024')
+            
+        Returns:
+            True if download was successful, False otherwise
+        """
+        try:
+            print(f"Downloading ENEM microdata for year {year}")
+            
+            # Construct the expected URL for this year
+            expected_url = f"https://download.inep.gov.br/microdados/microdados_enem_{year}.zip"
+            
+            # Check if already downloaded
+            if self._is_downloaded(expected_url):
+                print(f"File for year {year} already exists, skipping download")
+                return True
+            
+            # Try to download the specific file
+            success = self._download_file(expected_url)
+            
+            if success:
+                print(f"Successfully downloaded ENEM microdata for year {year}")
+            else:
+                print(f"Failed to download ENEM microdata for year {year}")
+            
+            return success
+            
+        except Exception as e:
+            print(f"Error downloading year {year}: {e}")
+            return False
+    
     def download_all(self, years: Optional[List[str]] = None) -> None:
         """Download all ENEM microdata files."""
         print("Fetching download links...")

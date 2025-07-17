@@ -122,27 +122,54 @@ class ENEMExtractor:
     
     def _should_extract_file(self, file_info: zipfile.ZipInfo) -> bool:
         """Check if file should be extracted."""
-        return (file_info.filename.endswith('.csv') and 
-                'MICRODADOS' in file_info.filename.upper())
+        filename = file_info.filename.upper()
+        
+        # Check for standard ENEM microdata files
+        if filename.endswith('.CSV') and 'MICRODADOS' in filename:
+            return True
+        
+        # Check for 2024 specific file structure (RESULTADOS_2024.csv in DADOS folder)
+        if filename.endswith('.CSV') and 'RESULTADOS_2024' in filename:
+            return True
+        
+        return False
     
     def _extract_csv_file(self, zip_ref: zipfile.ZipFile, file_info: zipfile.ZipInfo) -> bool:
         """Extract a single CSV file from ZIP."""
-        csv_name = Path(file_info.filename).name
-        target_path = self.downloads_dir / csv_name
+        original_csv_name = Path(file_info.filename).name
+        target_csv_name = self._normalize_csv_filename(original_csv_name)
+        target_path = self.downloads_dir / target_csv_name
         
         # Skip if CSV already exists
         if target_path.exists():
-            print(f"Skipping extraction: {csv_name} already exists")
+            print(f"Skipping extraction: {target_csv_name} already exists")
             return True
         
         try:
             with open(target_path, 'wb') as f:
                 f.write(zip_ref.read(file_info.filename))
-            print(f"Extracted: {csv_name}")
+            print(f"Extracted: {original_csv_name} -> {target_csv_name}")
             return True
         except Exception as e:
-            print(f"Error extracting {csv_name}: {e}")
+            print(f"Error extracting {original_csv_name}: {e}")
             return False
+    
+    def _normalize_csv_filename(self, original_name: str) -> str:
+        """
+        Normalize CSV filename to standard ENEM format.
+        
+        Args:
+            original_name: Original filename from ZIP
+            
+        Returns:
+            Normalized filename in standard format
+        """
+        # Handle 2024 specific case: RESULTADOS_2024.csv -> MICRODADOS_ENEM_2024.csv
+        if original_name.upper() == 'RESULTADOS_2024.CSV':
+            return 'MICRODADOS_ENEM_2024.csv'
+        
+        # For other files, keep the original name
+        return original_name
     
     def _delete_zip(self, zip_path: Path) -> None:
         """Delete a ZIP file."""
@@ -154,4 +181,8 @@ class ENEMExtractor:
     
     def get_csv_files(self) -> List[Path]:
         """Get list of extracted CSV files."""
-        return list(self.downloads_dir.glob('MICRODADOS_ENEM_*.csv')) 
+        # Look for both standard ENEM files and the 2024 file
+        csv_files = []
+        csv_files.extend(self.downloads_dir.glob('MICRODADOS_ENEM_*.csv'))
+        csv_files.extend(self.downloads_dir.glob('RESULTADOS_2024.csv'))
+        return csv_files 

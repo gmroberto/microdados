@@ -108,18 +108,34 @@ class ENEMLoader:
             
             # Load each file
             success_count = 0
+            skipped_count = 0
+            failed_count = 0
+            
             for csv_file in csv_files:
                 try:
+                    # Check if we should skip this file before processing
+                    table_name = self._get_table_name_from_file(csv_file)
+                    if self._should_skip_table_load(table_name):
+                        logger.info(f"Skipping {csv_file} - table {table_name} already exists with data")
+                        skipped_count += 1
+                        continue
+                    
                     if self.load_file(csv_file):
                         success_count += 1
+                    else:
+                        failed_count += 1
                 except Exception as e:
                     logger.error(f"Error loading {csv_file}: {e}")
+                    failed_count += 1
             
-            if success_count == len(csv_files):
-                logger.info("All files loaded successfully")
+            # Log summary
+            logger.info(f"Load summary: {success_count} files loaded, {skipped_count} files skipped (existing tables), {failed_count} files failed")
+            
+            if failed_count == 0:
+                logger.info("All files processed successfully")
                 return True
             else:
-                logger.warning(f"Loaded {success_count}/{len(csv_files)} files successfully")
+                logger.warning(f"Some files failed to load: {failed_count} failures out of {len(csv_files)} total files")
                 return False
                 
         except Exception as e:
@@ -139,6 +155,11 @@ class ENEMLoader:
         try:
             # Extract table name from filename
             table_name = self._get_table_name_from_file(file_path)
+            
+            # Check if table already exists and has data - early performance optimization
+            if self._should_skip_table_load(table_name):
+                logger.info(f"Table {table_name} already exists and has data, skipping load for {file_path}")
+                return True
             
             # Read CSV file
             logger.info(f"Loading {file_path} into table {table_name}")
@@ -183,6 +204,42 @@ class ENEMLoader:
             
         except Exception as e:
             logger.error(f"Error loading file {file_path}: {e}")
+            return False
+    
+    def _should_skip_table_load(self, table_name: str) -> bool:
+        """
+        Check if we should skip loading a table based on its current state.
+        
+        Args:
+            table_name: Name of the table to check
+            
+        Returns:
+            True if the table exists and has data, False otherwise
+        """
+        try:
+            # Check if skipping existing tables is enabled
+            skip_existing = get_setting('skip_existing_tables', True)
+            if not skip_existing:
+                logger.debug(f"Skipping existing tables is disabled, will process {table_name}")
+                return False
+            
+            # Check if table exists
+            if not self.db_manager.table_exists(table_name):
+                logger.debug(f"Table {table_name} does not exist, will create and load")
+                return False
+            
+            # Check if table has data
+            if not self.db_manager.table_has_data(table_name):
+                logger.debug(f"Table {table_name} exists but has no data, will load")
+                return False
+            
+            # Table exists and has data, skip loading
+            logger.info(f"Table {table_name} exists and has data, skipping load")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error checking table state for {table_name}: {e}")
+            # If we can't determine the state, proceed with loading to be safe
             return False
     
     def _get_table_name_from_file(self, file_path: Path) -> str:
@@ -363,6 +420,74 @@ class ENEMLoader:
         except Exception as e:
             logger.error(f"Error getting united table info: {e}")
             return {}
+    
+    def check_tables_status(self, folder_path: str) -> dict:
+        """
+        Check the status of all tables that would be created from CSV files in the directory.
+        
+        Args:
+            folder_path: Path to folder containing CSV files
+            
+        Returns:
+            Dictionary with table status information
+        """
+        try:
+            folder = Path(folder_path)
+            if not folder.exists():
+                logger.error(f"Folder does not exist: {folder_path}")
+                return {'error': f'Folder does not exist: {folder_path}'}
+            
+            # Find all CSV files
+            csv_files = list(folder.glob("*.csv"))
+            if not csv_files:
+                logger.warning("No CSV files found to check")
+                return {'files_found': 0, 'tables': {}}
+            
+            logger.info(f"Checking status of {len(csv_files)} CSV files")
+            
+            table_status = {}
+            for csv_file in csv_files:
+                table_name = self._get_table_name_from_file(csv_file)
+                
+                try:
+                    exists = self.db_manager.table_exists(table_name)
+                    has_data = self.db_manager.table_has_data(table_name) if exists else False
+                    
+                    table_status[table_name] = {
+                        'file': str(csv_file),
+                        'exists': exists,
+                        'has_data': has_data,
+                        'will_skip': exists and has_data
+                    }
+                    
+                except Exception as e:
+                    logger.error(f"Error checking status for {table_name}: {e}")
+                    table_status[table_name] = {
+                        'file': str(csv_file),
+                        'error': str(e)
+                    }
+            
+            # Calculate summary
+            total_files = len(csv_files)
+            existing_tables = sum(1 for status in table_status.values() if status.get('exists', False))
+            tables_with_data = sum(1 for status in table_status.values() if status.get('has_data', False))
+            will_skip = sum(1 for status in table_status.values() if status.get('will_skip', False))
+            
+            summary = {
+                'files_found': total_files,
+                'existing_tables': existing_tables,
+                'tables_with_data': tables_with_data,
+                'will_skip': will_skip,
+                'will_process': total_files - will_skip,
+                'tables': table_status
+            }
+            
+            logger.info(f"Table status summary: {will_skip} files will be skipped, {total_files - will_skip} files will be processed")
+            return summary
+            
+        except Exception as e:
+            logger.error(f"Error checking tables status: {e}")
+            return {'error': str(e)}
     
     def close(self):
         """Close database connections."""

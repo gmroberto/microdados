@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any, Callable
 
 from config import config_manager
+from database import DatabaseManager
 from downloader import ENEMDownloader
 from extractor import ENEMExtractor
 from loader import ENEMLoader
@@ -65,6 +66,39 @@ def download_enem_data(years: Optional[list] = None, skip_download: bool = False
     return _execute_with_logging('download', lambda: ENEMDownloader().download_all(years))
 
 
+def download_and_extract_2024() -> Dict[str, Any]:
+    """
+    Download and extract 2024 ENEM data specifically.
+    
+    Returns:
+        Dict containing status and any error information.
+    """
+    def _download_and_extract_2024():
+        try:
+            # Download 2024 data
+            logger.info("Downloading 2024 ENEM data...")
+            downloader = ENEMDownloader()
+            downloader.download_all(years=['2024'])
+            
+            # Extract 2024 data
+            logger.info("Extracting 2024 ENEM data...")
+            extractor = ENEMExtractor()
+            success = extractor.extract_file('microdados_enem_2024.zip')
+            
+            if success:
+                logger.info("Successfully downloaded and extracted 2024 ENEM data")
+                return {'status': 'success', 'error': None}
+            else:
+                logger.error("Failed to extract 2024 ENEM data")
+                return {'status': 'failed', 'error': 'Extraction failed'}
+                
+        except Exception as e:
+            logger.error(f"Error processing 2024 data: {e}")
+            return {'status': 'failed', 'error': str(e)}
+    
+    return _execute_with_logging('download_and_extract_2024', _download_and_extract_2024)
+
+
 def extract_zip_files() -> Dict[str, Any]:
     """
     Extract ZIP files to CSV without deleting them.
@@ -110,6 +144,22 @@ def load_csv_files() -> Dict[str, Any]:
     """
     def _load():
         loader = ENEMLoader()
+        
+        # Check table status before starting load process
+        logger.info("Checking existing table status before loading...")
+        status_check = loader.check_tables_status(str(DOWNLOADS_DIR))
+        
+        if 'error' in status_check:
+            logger.warning(f"Could not check table status: {status_check['error']}")
+        else:
+            logger.info(f"Table status: {status_check['will_skip']} files will be skipped, {status_check['will_process']} files will be processed")
+            
+            # Log details about which tables will be skipped
+            if status_check['will_skip'] > 0:
+                skipped_tables = [name for name, info in status_check['tables'].items() if info.get('will_skip', False)]
+                logger.info(f"Tables that will be skipped (already exist with data): {', '.join(skipped_tables)}")
+        
+        # Proceed with loading
         loader.load_all_files(str(DOWNLOADS_DIR))
         loader.close()
     
@@ -169,9 +219,9 @@ def delete_united_table() -> Dict[str, Any]:
         Dict containing status and any error information.
     """
     def _delete_table():
-        loader = ENEMLoader()
-        success = loader.delete_table(UNITED_TABLE_NAME)
-        loader.close()
+        db_manager = DatabaseManager()
+        success = db_manager.delete_table(UNITED_TABLE_NAME)
+        db_manager.close()
         if success:
             logger.info(f"Successfully deleted united table: {UNITED_TABLE_NAME}")
         else:

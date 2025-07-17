@@ -10,9 +10,8 @@
 # - BOOLEAN
 # - FLOAT
 
-enem_microdado_2011_2023:
+enem_microdado_2011_2024:
   columns:
-    nu_inscricao: BIGINT
     nu_ano: INTEGER
     tp_faixa_etaria: INTEGER
     tp_sexo: TEXT
@@ -93,6 +92,89 @@ enem_microdado_2011_2023:
     - index_columns: [tp_ensino]
     - index_columns: [tp_sexo]
     - index_columns: [tp_status_redacao]
+
+enem_microdado_2024:
+  columns:
+    nu_sequencial: BIGINT
+    co_escola: INTEGER
+    nu_inscricao: BIGINT
+    nu_ano: INTEGER
+    tp_faixa_etaria: INTEGER
+    tp_sexo: TEXT
+    tp_estado_civil: INTEGER
+    tp_cor_raca: INTEGER
+    tp_nacionalidade: INTEGER
+    tp_st_conclusao: INTEGER
+    tp_ano_concluiu: INTEGER
+    tp_escola: INTEGER
+    tp_ensino: DECIMAL
+    in_treineiro: INTEGER
+    co_municipio_esc: DECIMAL
+    no_municipio_esc: TEXT
+    co_uf_esc: DECIMAL
+    sg_uf_esc: TEXT
+    tp_dependencia_adm_esc: DECIMAL
+    tp_localizacao_esc: DECIMAL
+    tp_sit_func_esc: DECIMAL
+    co_municipio_prova: DECIMAL
+    no_municipio_prova: TEXT
+    co_uf_prova: TEXT
+    sg_uf_prova: TEXT
+    tp_presenca_cn: INTEGER
+    tp_presenca_ch: INTEGER
+    tp_presenca_lc: INTEGER
+    tp_presenca_mt: INTEGER
+    co_prova_cn: DECIMAL
+    co_prova_ch: DECIMAL
+    co_prova_lc: DECIMAL
+    co_prova_mt: DECIMAL
+    nu_nota_cn: DECIMAL
+    nu_nota_ch: DECIMAL
+    nu_nota_lc: DECIMAL
+    nu_nota_mt: DECIMAL
+    tx_respostas_cn: TEXT
+    tx_respostas_ch: TEXT
+    tx_respostas_lc: TEXT
+    tx_respostas_mt: TEXT
+    tp_lingua: INTEGER
+    tx_gabarito_cn: TEXT
+    tx_gabarito_ch: TEXT
+    tx_gabarito_lc: TEXT
+    tx_gabarito_mt: TEXT
+    tp_status_redacao: DECIMAL
+    nu_nota_comp1: DECIMAL
+    nu_nota_comp2: DECIMAL
+    nu_nota_comp3: DECIMAL
+    nu_nota_comp4: DECIMAL
+    nu_nota_comp5: DECIMAL
+    nu_nota_redacao: DECIMAL
+    q001: TEXT
+    q002: TEXT
+    q003: TEXT
+    q004: TEXT
+    q005: DECIMAL
+    q006: TEXT
+    q007: TEXT
+    q008: TEXT
+    q009: TEXT
+    q010: TEXT
+    q011: TEXT
+    q012: TEXT
+    q013: TEXT
+    q014: TEXT
+    q015: TEXT
+    q016: TEXT
+    q017: TEXT
+    q018: TEXT
+    q019: TEXT
+    q020: TEXT
+    q021: TEXT
+    q022: TEXT
+    q023: TEXT
+    q024: TEXT
+    q025: TEXT
+  indexes:
+    - index_columns: [nu_inscricao]
 
 enem_microdado_2023:
   columns:

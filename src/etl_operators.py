@@ -38,7 +38,7 @@ def _execute_phase(phase_name: str, phase_func, **kwargs):
         task_instance = context['task_instance']
         
         try:
-            # Execute the phase function
+            # Execute the phase function with the provided kwargs
             result = phase_func(**kwargs)
             
             # Store results in XCom
@@ -51,6 +51,8 @@ def _execute_phase(phase_name: str, phase_func, **kwargs):
             # Raise exception if failed
             if result['status'] == 'failed':
                 raise Exception(result['error'])
+                
+            return result
                 
         except Exception as e:
             logger.error(f"{phase_name.replace('_', ' ').title()} phase failed: {str(e)}")
@@ -99,7 +101,7 @@ def create_indexes(**context):
     return _execute_phase('indexes', create_database_indexes)(**context)
 
 
-def delete_united_table(**context):
+def delete_united_table_phase(**context):
     """Delete United Table - Delete the unified table."""
     return _execute_phase('delete_table', delete_united_table)(**context)
 
@@ -184,7 +186,7 @@ def create_indexes_operator(task_id='create_indexes', **kwargs):
 
 def create_delete_united_table_operator(task_id='delete_united_table', **kwargs):
     """Create delete united table operator."""
-    return create_operator(task_id, delete_united_table, **kwargs)
+    return create_operator(task_id, delete_united_table_phase, **kwargs)
 
 
 def create_cleanup_operator(task_id='cleanup_phase', **kwargs):

@@ -20,7 +20,7 @@ class UnitedTableLogic:
     
     This class provides functionality to:
     - Create a unified table schema
-    - Populate the table with data from years 2011-2023 only
+    - Populate the table with data from years 2011-2024 only
     - Create optimized indexes for performance
     """
     
@@ -33,7 +33,7 @@ class UnitedTableLogic:
         """
         from config import get_setting, config_manager
         
-        self.table_name = table_name or get_setting('united_table_name', 'enem_microdado_2011_2023')
+        self.table_name = table_name or get_setting('united_table_name', 'enem_microdado_2011_2024')
         self.db_manager = DatabaseManager()
         self.schemas = self._load_schemas()
     
@@ -78,9 +78,9 @@ class UnitedTableLogic:
         except (ValueError, IndexError):
             pass
         return None
-    
+
     def _get_year_tables(self) -> List[str]:
-        """Get list of year-specific tables that exist in the database (2011-2023 only)."""
+        """Get list of year-specific tables that exist in the database (2011-2024 only)."""
         try:
             query = """
                 SELECT table_name 
@@ -93,16 +93,16 @@ class UnitedTableLogic:
             result = self.db_manager.execute_query(query, (self.table_name,))
             all_tables = [row[0] for row in result] if result else []
             
-            # Filter tables to only include years 2011-2023
+            # Filter tables to only include years 2011-2024
             filtered_tables = []
             for table_name in all_tables:
                 year = self._extract_year_from_table_name(table_name)
-                if year and 2011 <= year <= 2023:
+                if year and 2011 <= year <= 2024:
                     filtered_tables.append(table_name)
                 elif year:
-                    logger.info(f"Skipping table {table_name} (year {year} outside range 2011-2023)")
+                    logger.info(f"Skipping table {table_name} (year {year} outside range 2011-2024)")
             
-            logger.info(f"Found {len(filtered_tables)} tables for years 2011-2023: {filtered_tables}")
+            logger.info(f"Found {len(filtered_tables)} tables for years 2011-2024: {filtered_tables}")
             return filtered_tables
         except Exception as e:
             logger.error(f"Error getting year tables: {e}")
@@ -215,7 +215,7 @@ class UnitedTableLogic:
     
     def populate_united_table(self) -> bool:
         """
-        Populate the united table with data from year-specific tables (2011-2023 only).
+        Populate the united table with data from year-specific tables (2011-2024 only).
         
         Returns:
             True if population was successful, False otherwise
